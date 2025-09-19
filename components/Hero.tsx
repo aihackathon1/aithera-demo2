@@ -13,7 +13,7 @@ export default function Hero() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Hello 👋 I'm your AI Therapist. How are you feeling today?",
+      text: "Hello, I'm Dr. Sarah, your AI therapist. I'm here to listen and support you in a safe, non-judgmental space. What's on your mind today?",
       isBot: true,
       timestamp: new Date()
     }
@@ -21,9 +21,12 @@ export default function Hero() {
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
@@ -77,7 +80,20 @@ export default function Hero() {
       const messagesWithSystem = [
         {
           role: 'system',
-          content: 'You are a compassionate AI therapist. Provide supportive, empathetic responses focused on mental health and wellness. Keep responses conversational and helpful. Do not provide medical advice, but offer emotional support and suggest healthy coping strategies.'
+          content: `You are Dr. Sarah, a compassionate and experienced AI therapist specializing in cognitive behavioral therapy and mindfulness-based approaches. Your role is to:
+
+1. Provide empathetic, non-judgmental emotional support
+2. Use active listening techniques and reflective responses
+3. Ask thoughtful, open-ended questions to help users explore their feelings
+4. Suggest evidence-based coping strategies and mindfulness exercises
+5. Validate emotions while gently challenging unhelpful thought patterns
+6. Maintain professional boundaries while being warm and approachable
+7. Focus on the present moment and practical next steps
+8. Never provide medical diagnoses or replace professional therapy
+9. Encourage self-compassion and personal growth
+10. Use "I" statements and avoid giving direct advice
+
+Respond in 2-3 sentences maximum, keeping conversations natural and flowing. Always end with a gentle question or invitation for the user to share more.`
         },
         ...chatHistory
       ];
@@ -109,7 +125,7 @@ export default function Hero() {
       console.error('Error calling ChatGPT API:', error);
       const errorMessage: Message = {
         id: messages.length + 2,
-        text: 'I apologize, but I\'m having trouble connecting right now. Please try again in a moment.',
+        text: 'I\'m here to listen and support you. While I\'m experiencing some technical limitations right now, I want you to know that your feelings are valid and important. Would you like to try some breathing exercises or mindfulness techniques while we work through this together?',
         isBot: true,
         timestamp: new Date()
       };
@@ -155,11 +171,11 @@ export default function Hero() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-semibold text-white">AI Support</h3>
+                  <h3 className="text-lg font-semibold text-white">Dr. Sarah - AI Therapist</h3>
                 </div>
                 
                 {/* Message Area */}
-                <div className="h-80 overflow-y-auto p-6 space-y-4">
+                <div ref={chatContainerRef} className="h-80 overflow-y-auto p-6 space-y-4">
                   {messages.map((message) => (
                     <div key={message.id} className={`flex ${message.isBot ? 'space-x-3' : 'justify-end space-x-3'}`}>
                       {message.isBot ? (
