@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 interface Message {
   id: number;
@@ -22,6 +23,43 @@ export default function Hero() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Animation variants
+  const fadeInUp = {
+    initial: { opacity: 0, y: 60 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, ease: "easeOut" }
+  };
+
+  const fadeInUpDelay = {
+    initial: { opacity: 0, y: 60 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, delay: 0.2, ease: "easeOut" }
+  };
+
+  const fadeInUpDelayMore = {
+    initial: { opacity: 0, y: 60 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, delay: 0.4, ease: "easeOut" }
+  };
+
+  const bounceIn = {
+    initial: { opacity: 0, scale: 0.8 },
+    animate: { opacity: 1, scale: 1 },
+    transition: { 
+      duration: 0.6, 
+      delay: 0.6, 
+      type: "spring", 
+      stiffness: 200, 
+      damping: 10 
+    }
+  };
+
+  const chatWindowAnimation = {
+    initial: { opacity: 0, scale: 0.9, y: 40 },
+    animate: { opacity: 1, scale: 1, y: 0 },
+    transition: { duration: 1, delay: 0.8, ease: "easeOut" }
+  };
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -141,27 +179,55 @@ Respond in 2-3 sentences maximum, keeping conversations natural and flowing. Alw
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Content */}
           <div className="space-y-8">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
+            <motion.h1 
+              className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight"
+              {...fadeInUp}
+            >
               Your AI Therapist –{' '}
               <span className="gradient-text">Always Here to Listen</span>
-            </h1>
+            </motion.h1>
             
-            <p className="text-xl text-gray-600 leading-relaxed">
+            <motion.p 
+              className="text-xl text-gray-600 leading-relaxed"
+              {...fadeInUpDelay}
+            >
               Empowering you with personalized, interactive support for mental health and wellness.
-            </p>
+            </motion.p>
             
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button className="btn-primary text-lg px-10 py-4">
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4"
+              {...fadeInUpDelayMore}
+            >
+              <motion.button 
+                className="btn-primary text-lg px-10 py-4"
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0 10px 25px rgba(139, 92, 246, 0.3)" 
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
                 Get Started
-              </button>
-              <button className="btn-secondary text-lg px-10 py-4">
+              </motion.button>
+              <motion.button 
+                className="btn-secondary text-lg px-10 py-4"
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)" 
+                }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
                 Learn More
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           </div>
 
           {/* Right side - Chatbot Window */}
-          <div className="relative">
+          <motion.div 
+            className="relative"
+            {...chatWindowAnimation}
+          >
             <div className="bg-gradient-to-br from-ai-purple/20 to-ai-green/20 rounded-3xl p-8 shadow-2xl">
               <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
                 {/* Title Bar */}
@@ -251,9 +317,32 @@ Respond in 2-3 sentences maximum, keeping conversations natural and flowing. Alw
             </div>
             
             {/* Floating elements */}
-            <div className="absolute -top-4 -right-4 w-16 h-16 bg-ai-yellow/20 rounded-full animate-pulse"></div>
-            <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-ai-orange/20 rounded-full animate-pulse delay-1000"></div>
-          </div>
+            <motion.div 
+              className="absolute -top-4 -right-4 w-16 h-16 bg-ai-yellow/20 rounded-full"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.6, 0.3]
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+            ></motion.div>
+            <motion.div 
+              className="absolute -bottom-4 -left-4 w-12 h-12 bg-ai-orange/20 rounded-full"
+              animate={{ 
+                scale: [1, 1.3, 1],
+                opacity: [0.3, 0.7, 0.3]
+              }}
+              transition={{ 
+                duration: 2.5, 
+                repeat: Infinity, 
+                ease: "easeInOut",
+                delay: 1
+              }}
+            ></motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

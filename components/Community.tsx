@@ -1,3 +1,7 @@
+'use client';
+
+import { motion } from 'framer-motion';
+
 export default function Community() {
   const communityCards = [
     {
@@ -38,25 +42,77 @@ export default function Community() {
     }
   ]
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
     <section id="community" className="py-20 bg-gradient-soft">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className="text-4xl font-bold text-gray-900 mb-6">
             Join Our <span className="gradient-text">Supportive Community</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Connect with like-minded individuals who understand your journey and are here to support you every step of the way.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
           {communityCards.map((card, index) => (
-            <div key={index} className="group">
-              <div className={`${card.color} rounded-2xl p-8 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105`}>
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+            <motion.div 
+              key={index} 
+              className="group"
+              variants={cardVariants}
+              whileHover={{ 
+                scale: 1.05, 
+                y: -10,
+                boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)"
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className={`${card.color} rounded-2xl p-8 text-white shadow-lg`}>
+                <motion.div 
+                  className="text-4xl mb-4"
+                  whileHover={{ 
+                    scale: 1.2, 
+                    rotate: [0, -10, 10, 0] 
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
                   {card.icon}
-                </div>
+                </motion.div>
                 <h3 className="text-xl font-bold mb-3">
                   {card.title}
                 </h3>
@@ -64,9 +120,9 @@ export default function Community() {
                   {card.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

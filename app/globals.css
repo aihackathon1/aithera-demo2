@@ -6,6 +6,7 @@
 @layer base {
   html {
     font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
   }
   
   body {
@@ -20,6 +21,10 @@
   
   .btn-secondary {
     @apply bg-white text-gray-700 px-6 py-2 rounded-full font-medium hover:shadow-md transition-all duration-300 border border-gray-200;
+  }
+  
+  .btn-dashboard {
+    @apply bg-gradient-to-r from-ai-green to-emerald-500 text-white px-6 py-2 rounded-full font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105;
   }
   
   .card {
